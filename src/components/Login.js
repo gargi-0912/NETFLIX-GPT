@@ -3,13 +3,13 @@ import Header from "./Header";
 import { checkValiddata } from "../utils/validate";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile} from "firebase/auth";
 import {auth} from "../utils/firebase" ;
-import { Navigate, useNavigate } from "react-router-dom";
+import { USER_AVATAR } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 const Login=()=>{
     const [isSignInForm,setIsSignInForm]=useState(true);
     const [errorMessage,setErrorMessage]=useState(null);
-    const navigate=useNavigate();
+    // const navigate=useNavigate();
     const dispatch=useDispatch();
 
     const name=useRef(null);
@@ -33,12 +33,12 @@ if(!isSignInForm){
       // Signed up 
       const user = userCredential.user;
       updateProfile(user, {
-        displayName: name.current.value, photoURL: "https://media.licdn.com/dms/image/D4D03AQEKG21ctwGg-g/profile-displayphoto-shrink_200_200/0/1698570436345?e=1715817600&v=beta&t=iEB_0NyJFdbTHJk66LiIrFY271244YQnwhB-KQdBkVM"
+        displayName: name.current.value, photoURL: USER_AVATAR,
 
       }).then(() => {
         const {uid,email,displayName,photoURL} = auth.currentUser;
           dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}))
-        navigate("/browse");
+        // navigate("/browse");
       }).catch((error) => {
         setErrorMessage(error.message)
       });
@@ -59,8 +59,8 @@ else{
   .then((userCredential) => {
     // Signed in 
     const user = userCredential.user;
-    console.log(user);
-    navigate("/browse");
+    
+    //navigate("/browse");
     // ...
   })
   .catch((error) => {
